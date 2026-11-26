@@ -4,6 +4,6 @@
 // la sécurité vient des règles de la base (supabase/01_installation.sql).
 // NE METTEZ JAMAIS ICI une clé secrète (sb_secret_... ou service_role).
 window.CAMPUSLINK_CONFIG = {
-  supabaseUrl: '',   // exemple : 'https://abcdefghijkl.supabase.co'
-  supabaseKey: '',   // exemple : 'sb_publishable_xxxxxxxxxxxxxxxx'
+  supabaseUrl: 'https://cmyrktbxianyvnlxgwvv.supabase.co',
+  supabaseKey: 'sb_publishable_pTKD_HOFWGjM_JB5FFwG7w_RLf4mYe7',
 };

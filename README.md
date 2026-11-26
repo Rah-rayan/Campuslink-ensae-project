@@ -13,74 +13,10 @@ Plateforme d'entraide entre étudiants.
 
 **Technique :** le site (dossier `site/`, HTML, CSS et JavaScript sans compilation) est hébergé par **GitHub Pages**. Les comptes, la base de données et les fichiers sont chez **Supabase**. GitHub Pages seul ne peut pas stocker de données : les deux sont nécessaires.
 
----
+ à l'adresse `https://VOTRE-COMPTE.github.io/campuslink/`.
+pour les nouveaux utilisateurs prié d'utiliser :
 
-## Installation (environ 20 minutes)
 
-### 1. Créer la base de données
-1. Créez un compte et un projet sur <https://supabase.com> (offre gratuite).
-2. Ouvrez **SQL Editor > New query**, collez tout le contenu de `supabase/01_installation.sql`, cliquez sur **Run**.
-3. Le résultat affiche le **code d'invitation**. Notez-le.
-
-Ce fichier s'exécute une seule fois, sur un projet neuf.
-
-### 2. Ajouter vos classes et matières
-Les classes et matières de `supabase/02_classes_matieres.sql` sont des **exemples**. Adaptez-les, puis exécutez le fichier dans le SQL Editor.
-
-### 3. Régler l'inscription
-Dans **Authentication > Sign In / Providers > Email**, désactivez **Confirm email**.
-
-Pourquoi : sans serveur d'envoi à vous, Supabase n'envoie des e-mails qu'aux membres de l'équipe du projet, et très peu par heure. Les étudiants resteraient bloqués. Le code d'invitation protège déjà l'accès.
-
-Conséquence : « Mot de passe oublié » ne fonctionnera qu'après avoir configuré un serveur d'envoi ([guide SMTP](https://supabase.com/docs/guides/auth/auth-smtp)). Vous pourrez alors réactiver la confirmation.
-
-### 4. Relier le site à la base
-Dans Supabase, bouton **Connect** (ou **Project Settings > API Keys**), copiez l'adresse du projet et la clé **publishable**, puis remplissez `site/config.js` :
-
-```js
-window.CAMPUSLINK_CONFIG = {
-  supabaseUrl: 'https://VOTRE-PROJET.supabase.co',
-  supabaseKey: 'sb_publishable_...',
-};
-```
-
-> La clé *publishable* peut être publique. La clé **secrète** (`sb_secret_...` ou `service_role`) ne doit **jamais** aller sur GitHub.
-
-### 5. Envoyer sur GitHub
-Créez un dépôt **public** et vide sur GitHub (par exemple `campuslink`). Décompressez l'archive, ouvrez un terminal dans le dossier `campuslink`, puis :
-
-```bash
-git init -b main
-git add .
-git commit -m "Première version de CampusLink"
-git remote add origin https://github.com/VOTRE-COMPTE/campuslink.git
-git push -u origin main
-```
-
-Utilisez Git (ou GitHub Desktop) plutôt que le glisser-déposer du site : le dossier caché `.github` risque d'être oublié.
-
-### 6. Activer la publication
-Dans le dépôt : **Settings > Pages > Build and deployment > Source : GitHub Actions**.
-Puis onglet **Actions** > « Tester et déployer CampusLink » > **Run workflow** (ou relancez l'exécution qui a échoué).
-
-Le site sera à l'adresse `https://VOTRE-COMPTE.github.io/campuslink/`.
-
-### 7. Déclarer l'adresse du site
-Dans Supabase, **Authentication > URL Configuration** :
-- **Site URL** : `https://VOTRE-COMPTE.github.io/campuslink/`
-- **Redirect URLs** : `https://VOTRE-COMPTE.github.io/campuslink/**`
-
-### 8. Créer le premier modérateur
-Inscrivez-vous **depuis le site** avec le code d'invitation (un compte créé depuis le tableau de bord Supabase serait refusé, faute de code). Puis, dans le SQL Editor :
-
-```sql
-update public.profils set role = 'moderateur'
-where id = (select id from auth.users where email = 'votre-adresse@exemple.com');
-```
-
-Rechargez le site : le menu **Modération** apparaît (sur téléphone, en haut).
-
----
 
 ## Règles de fonctionnement
 

@@ -1,0 +1,66 @@
+name: Tester et déployer CampusLink
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v7
+      - name: Corriger les noms de dossiers
+        run: |
+          if [ -d test ] && [ ! -d tests ]; then mv test tests; fi
+          if [ -d site/Css ] && [ ! -d site/css ]; then mv site/Css site/css; fi
+      - name: Vérifier le code du site
+        run: |
+          for fichier in $(find site/js -name '*.js') site/config.js; do
+            node --input-type=module --check < "$fichier" || { echo "Erreur dans $fichier"; exit 1; }
+          done
+      - name: Vérifier la configuration
+        run: node tests/verifier_config.mjs
+      - name: Tester la base de données et ses règles de sécurité
+        run: bash tests/lancer.sh
+
+  deployer:
+    needs: tests
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploiement.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Corriger le nom du dossier de style
+        run: if [ -d site/Css ] && [ ! -d site/css ]; then mv site/Css site/css; fi
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+      - id: deploiement
+        uses: actions/deploy-pages@v5

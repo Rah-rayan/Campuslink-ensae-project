@@ -13,11 +13,10 @@ Plateforme d'entraide entre étudiants.
 
 **Technique :** le site (dossier `site/`, HTML, CSS et JavaScript sans compilation) est hébergé par **GitHub Pages**. Les comptes, la base de données et les fichiers sont chez **Supabase**. GitHub Pages seul ne peut pas stocker de données : les deux sont nécessaires.
 
- à l'adresse `https://VOTRE-COMPTE.github.io/campuslink/`.
-pour les nouveaux utilisateurs prié d'utiliser :
-
-
-
+ à l'adresse `https://VOTRE-COMPTE.github.io/campuslink/
+ 
+ 
+ **pour les nouveaux utilisateurs**: prier d'utiliser ce code de validation **6E85681A1A**
 ## Règles de fonctionnement
 
 **Score de confiance** (par personne et par matière) :
@@ -59,23 +58,6 @@ La plateforme traite des données personnelles d'étudiants. Au Sénégal, la lo
 
 Voir les [tarifs à jour](https://supabase.com/pricing).
 
-## Travailler à plusieurs
-
-```
-site/                      le site publié
-  config.js                connexion à Supabase
-  js/pages/                une page = un fichier
-  css/style.css
-supabase/                  base de données et règles de sécurité
-tests/                     tests de la base
-.github/workflows/         tests puis déploiement automatiques
-```
-
-- Travaillez sur une branche, ouvrez une *pull request* : les tests se lancent tout seuls. La fusion dans `main` publie le site.
-- Essai en local : `cd site && python3 -m http.server 8000`, puis <http://localhost:8000> (ajoutez cette adresse aux *Redirect URLs* pour les liens reçus par e-mail).
-- Tests de la base (PostgreSQL 15 ou plus) : `bash tests/lancer.sh`. N'exécutez jamais `tests/imitation_supabase.sql` sur Supabase.
-- Après l'installation, une modification de la base se fait dans un **nouveau** fichier SQL (par exemple `supabase/03_....sql`).
-- Si vous utilisez un nom de domaine personnalisé pour Supabase, ajoutez-le à `connect-src` dans `site/index.html`.
 
 ## Dépannage
 

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CampusLink</title>
+  <meta name="description" content="Entraide, documents de cours et projets entre étudiants">
+  <meta name="theme-color" content="#1c2a6e">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <!-- Le site ne charge que ses propres fichiers et ne parle qu'à Supabase -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app"><p class="chargement">Chargement…</p></div>
+  <div id="messages" aria-live="polite"></div>
+  <noscript><p class="chargement">CampusLink a besoin de JavaScript pour fonctionner.</p></noscript>
+  <script src="vendor/supabase.js"></script>
+  <script src="config.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
